@@ -19,7 +19,9 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.cafray.Ecclesiared"
+      "package": "com.cafray.Ecclesiared",
+          "newArchEnabled": true,
+            "jsEngine": "hermes" 
     },
     "web": {
       "favicon": "./assets/favicon.png"
@@ -29,7 +31,6 @@
         "projectId": "ffd82742-0f23-44cc-89d7-da1e339935cb"
       }
     },
-    "owner": "cafray",
     "runtimeVersion": {
       "policy": "appVersion"
     },

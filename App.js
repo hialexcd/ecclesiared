@@ -6,6 +6,7 @@ import CommunicationScreen from './src/screens/CommunicationScreens/Communicatio
 import MainScrollableView from './src/screens/MainScrollableView';
 import Header from './src/components/Header';
 import DrawerNavigation from './src/components/EcDrawer';
+//import { registerRootComponent } from 'expo';  // Asegúrate de importar registerRootComponent
 
 export default function App() {
   return (
