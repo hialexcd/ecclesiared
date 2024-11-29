@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, FlatList, TouchableOpacity, StyleSheet, TextInput, ActivityIndicator } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
+import { getMensajesRecibidos } from '../services/api';  // Asegúrate de tener la ruta correcta
 
 const ECRecebidos = () => {
 
@@ -14,7 +15,7 @@ const ECRecebidos = () => {
   const [filteredMessages, setFilteredMessages] = useState([]);
 
   // Simulated data fetch - replace this with your actual API call
-  const fetchMessages = (pageNumber) => {
+/*  const fetchMessages = (pageNumber) => {
     setLoading(true);
     // Simulating an API call
     setTimeout(() => {
@@ -29,10 +30,32 @@ const ECRecebidos = () => {
       setLoading(false);
     }, 1000);
   };
+  */
+const fetchMessages = async (pageNumber) => {
+  setLoading(true);
+  try {
+    // Llamamos a la función de la API que devuelve los mensajes recibidos
+    const response = await getMensajesRecibidos();
+    const newMessages = response.map((message) => ({
+      id: message.id,
+      from: message.de,  // Aquí se mapea el campo "de" a "from"
+      subject: message.asunto,  // Aquí se mapea el campo "asunto"
+      date: new Date(message.fecha).toLocaleString(),  // Formatea la fecha
+      isReply: message.respondido === '1',  // Establece si es respuesta
+    }));
 
-  useEffect(() => {
-    fetchMessages(page);
-  }, [page]);
+    setMessages((prevMessages) => [...prevMessages, ...newMessages]);
+  } catch (error) {
+    console.error('Error fetching messages:', error);
+  } finally {
+    setLoading(false);
+  }
+};
+
+useEffect(() => {
+  fetchMessages(page);
+}, [page]);
+
 
   useEffect(() => {
     const filtered = messages.filter(message => 

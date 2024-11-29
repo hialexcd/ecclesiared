@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Image } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Image, Linking } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
 const EcCustom = ({ navigation }) => {
@@ -7,7 +7,13 @@ const EcCustom = ({ navigation }) => {
   const navigateTo = (screenName) => {
     navigation.navigate(screenName);
   };
-
+    
+  // Función para abrir la URL en el navegador
+  const openWebPage = () => {
+    Linking.openURL('https://www.ecclesiared.es/')
+      .catch((err) => console.error('Error al abrir la URL: ', err)); 
+  };
+    
   return (
     <ScrollView style={styles.container}>
       <View style={styles.profileSection}>
@@ -16,8 +22,8 @@ const EcCustom = ({ navigation }) => {
           style={styles.profileImage}
         />*/}
         <View>
-          <Text style={styles.profileName}>Fernando Varela</Text>
-          <Text style={styles.profileSubtext}>Mis datos ▼</Text>
+          <Text style={styles.profileName}>Jorge</Text>
+          <Text style={styles.profileSubtext}>Mis datos </Text>
         </View>
       </View>
       <TouchableOpacity style={styles.menuItem} onPress={() => navigateTo('Home')}>
@@ -28,24 +34,23 @@ const EcCustom = ({ navigation }) => {
         <Ionicons name="settings-outline" size={24} color="#fff" />
         <Text style={styles.menuText}>Configuración</Text>
       </TouchableOpacity>
-      <TouchableOpacity style={styles.menuItem}>
+      <TouchableOpacity style={styles.menuItem} onPress={() => navigateTo('Home')}>
         <Ionicons name="calendar-outline" size={24} color="#fff" />
         <Text style={styles.menuText}>Agenda Interior</Text>
       </TouchableOpacity>
-      <View style={styles.submenuItem}>
         <TouchableOpacity style={styles.menuItem} onPress={() => navigateTo('Communication')}>
           <Ionicons name="mail-outline" size={24} color="#fff" />
           <Text style={styles.menuText}>Comunicación</Text>
         </TouchableOpacity>
-      </View>
-      <TouchableOpacity style={styles.menuItem}>
+      <TouchableOpacity style={styles.menuItem} onPress={() => navigateTo('Home')}>
         <Ionicons name="book-outline" size={24} color="#fff" />
         <Text style={styles.menuText}>L. Parroquiales</Text>
       </TouchableOpacity>
-      <TouchableOpacity style={styles.menuItem}>
+      <TouchableOpacity style={styles.menuItem} onPress={openWebPage}>
         <Ionicons name="globe-outline" size={24} color="#fff" />
         <Text style={styles.menuText}>Página web</Text>
       </TouchableOpacity>
+
     </ScrollView>
   );
 };

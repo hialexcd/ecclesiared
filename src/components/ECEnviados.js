@@ -1,8 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, FlatList, TouchableOpacity, StyleSheet, TextInput, ActivityIndicator } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { useNavigation } from '@react-navigation/native';
+import { getMensajesEnviados } from '../services/api';  // Asegúrate de tener la ruta correcta
 
 const ECEnviados = () => {
+
+  const navigation = useNavigation();
+
   const [messages, setMessages] = useState([]);
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(false);
@@ -10,39 +15,68 @@ const ECEnviados = () => {
   const [filteredMessages, setFilteredMessages] = useState([]);
 
   // Simulated data fetch - replace this with your actual API call
-  const fetchMessages = (pageNumber) => {
+/*  const fetchMessages = (pageNumber) => {
     setLoading(true);
     // Simulating an API call
     setTimeout(() => {
       const newMessages = [
-        { id: `${pageNumber}1`, to: 'Soporte Técnico (Ecclesiared)', subject: `Solicitud de asistencia ${pageNumber}`, date: '10 Febrero 2024 - 15:27' },
-        { id: `${pageNumber}2`, to: 'Administración Parroquial', subject: `Informe mensual ${pageNumber}`, date: '28 Oct 2023 - 9:53' },
-        { id: `${pageNumber}3`, to: 'Comité de Eventos', subject: `Planificación de la fiesta patronal ${pageNumber}`, date: '15 Jun 2023 - 11:49' },
-        { id: `${pageNumber}4`, to: 'Voluntarios', subject: `Convocatoria para el nuevo proyecto comunitario ${pageNumber}`, date: '05 May 2023 - 18:31' },
-        { id: `${pageNumber}5`, to: 'Diócesis', subject: `Solicitud de recursos adicionales ${pageNumber}`, date: '12 Abr 2023 - 10:53' },
+        { id: `${pageNumber}1`, from: 'Soporte Técnico (Ecclesiared)', subject: `Tu opinión nos importa ${pageNumber}`, date: '06 Febrero 2024 - 5:27', isReply: true },
+        { id: `${pageNumber}2`, from: 'Soporte Técnico (Ecclesiared)', subject: `Verificador de documentos ${pageNumber}`, date: '24 Oct 2023 - 5:53', isReply: false },
+        { id: `${pageNumber}3`, from: 'Soporte Técnico (Ecclesiared)', subject: `RE: Mensaje de soporte: Nuevo diseño ${pageNumber}`, date: '06 Jun 2023 - 3:49', isReply: true },
+        { id: `${pageNumber}4`, from: 'Soporte Técnico (Ecclesiared)', subject: `10 mayo - Curso GRATUITO Nuevas tendencias tecnológicas ${pageNumber}`, date: '03 May 2023 - 4:31', isReply: false },
+        { id: `${pageNumber}5`, from: 'Soporte Técnico (Ecclesiared)', subject: `RE: Mensaje de soporte ${pageNumber}`, date: '05 Abr 2023 - 9:53', isReply: false },
       ];
       setMessages(prevMessages => [...prevMessages, ...newMessages]);
       setLoading(false);
     }, 1000);
   };
+  */
+const fetchMessages = async (pageNumber) => {
+  setLoading(true);
+  try {
+    // Llamamos a la función de la API que devuelve los mensajes Enviados
+    const response = await getMensajesEnviados();
+    const newMessages = response.map((message) => ({
+      id: message.id,
+      from: message.de,  // Aquí se mapea el campo "de" a "from"
+      subject: message.asunto,  // Aquí se mapea el campo "asunto"
+      date: new Date(message.fecha).toLocaleString(),  // Formatea la fecha
+      isReply: message.respondido === '1',  // Establece si es respuesta
+    }));
 
-  useEffect(() => {
-    fetchMessages(page);
-  }, [page]);
+    setMessages((prevMessages) => [...prevMessages, ...newMessages]);
+  } catch (error) {
+    console.error('Error fetching messages:', error);
+  } finally {
+    setLoading(false);
+  }
+};
+
+useEffect(() => {
+  fetchMessages(page);
+}, [page]);
+
 
   useEffect(() => {
     const filtered = messages.filter(message => 
-      message.to.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      message.from.toLowerCase().includes(searchQuery.toLowerCase()) ||
       message.subject.toLowerCase().includes(searchQuery.toLowerCase())
     );
     setFilteredMessages(filtered);
   }, [searchQuery, messages]);
 
   const renderItem = ({ item }) => (
-    <TouchableOpacity style={styles.messageItem}>
+    <TouchableOpacity style={styles.messageItem} onPress={() => navigation.navigate('ECMessages', { 
+      messageId: item.id,
+      subject: item.subject // Make sure to pass the subject here
+    })}>
       <View style={styles.messageHeader}>
-        <Ionicons name="paper-plane-outline" size={20} color="#26A69A" />
-        <Text style={styles.toText} numberOfLines={1}>{item.to}</Text>
+        <Ionicons 
+          name={item.isReply ? "arrow-undo" : "mail"} 
+          size={20} 
+          color="#26A69A" 
+        />
+        <Text style={styles.fromText} numberOfLines={1}>{item.from}</Text>
       </View>
       <Text style={styles.subjectText} numberOfLines={2}>{item.subject}</Text>
       <View style={styles.messageFooter}>
@@ -80,7 +114,7 @@ const ECEnviados = () => {
         <Ionicons name="search" size={20} color="#26A69A" style={styles.searchIcon} />
         <TextInput
           style={styles.searchInput}
-          placeholder="Buscar mensajes enviados..."
+          placeholder="Buscar mensajes Enviados..."
           value={searchQuery}
           onChangeText={setSearchQuery}
         />
@@ -128,7 +162,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: 5,
   },
-  toText: {
+  fromText: {
     fontSize: 16,
     fontWeight: 'bold',
     marginLeft: 10,

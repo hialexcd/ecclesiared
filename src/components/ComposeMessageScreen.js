@@ -3,6 +3,7 @@ import { View, Text, TextInput, TouchableOpacity, ScrollView, StyleSheet, Platfo
 import DropDownPicker from 'react-native-dropdown-picker';
 import MessageFolders from './MessageFolders';
 import ECDocumentPicker from './ECDocumentPicker';
+import { enviarMensaje } from '../services/api';  // Importar la función enviarMensaje
 
 const ComposeMessageScreen = () => {
   const [recipient, setRecipient] = useState('');
@@ -10,18 +11,34 @@ const ComposeMessageScreen = () => {
   const [subject, setSubject] = useState('');
   const [message, setMessage] = useState('');
 
-  // State for dropdown
+  // Estado para dropdown
   const [open, setOpen] = useState(false);
   const [items, setItems] = useState([
     {label: 'Seleccione una diócesis', value: null},
     {label: 'Bogotá', value: 'bogota'},
     {label: 'Medellín', value: 'medellin'},
     {label: 'Cali', value: 'cali'},
-    // Add more dioceses as needed
+    // Agrega más diócesis según sea necesario
   ]);
 
-  const handleSend = () => {
-    console.log('Sending message:', { recipient, diocese, subject, message });
+  const handleSend = async () => {
+    // Crea el objeto mensaje con los valores del formulario
+    const mensaje = {
+      recipient,
+      diocese,
+      subject,
+      message,
+    };
+
+    console.log('Sending message:', mensaje);  // Log de los datos antes de enviarlos
+
+    try {
+      // Llamamos a la función enviarMensaje para enviar los datos a la API
+      const response = await enviarMensaje(mensaje);
+      console.log('Mensaje enviado con éxito:', response);
+    } catch (error) {
+      console.error('Error al enviar el mensaje:', error);
+    }
   };
 
   return (
@@ -38,18 +55,18 @@ const ComposeMessageScreen = () => {
       />
       
       <View style={styles.pickerContainer}>
-      <DropDownPicker
-        open={open}
-        value={diocese}
-        items={items}
-        setOpen={setOpen}
-        setValue={setDiocese}
-        setItems={setItems}
-        placeholder="Seleccione una diócesis"
-        style={styles.dropdown}
-        dropDownContainerStyle={styles.dropdownContainer}
-        textStyle={styles.dropdownText}
-      />
+        <DropDownPicker
+          open={open}
+          value={diocese}
+          items={items}
+          setOpen={setOpen}
+          setValue={setDiocese}
+          setItems={setItems}
+          placeholder="Seleccione una diócesis"
+          style={styles.dropdown}
+          dropDownContainerStyle={styles.dropdownContainer}
+          textStyle={styles.dropdownText}
+        />
       </View>
 
       <Text style={styles.label}>Asunto:</Text>
@@ -112,29 +129,6 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     marginBottom: 16,
     borderRadius: 5,
-    ...Platform.select({
-      ios: {
-        // iOS-specific styles
-      },
-      android: {
-        // Android-specific styles
-      },
-    }),
-  },
-  picker: {
-    height: 40,
-    width: '100%',
-    ...Platform.select({
-      ios: {
-        // iOS-specific styles
-      },
-      android: {
-        color: 'black',
-      },
-    }),
-  },
-  pickerItem: {
-    fontSize: 16,
   },
   sendButton: {
     backgroundColor: '#26A69A',

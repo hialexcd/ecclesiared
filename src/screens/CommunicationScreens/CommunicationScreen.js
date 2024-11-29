@@ -14,6 +14,7 @@ import { createMaterialTopTabNavigator } from '@react-navigation/material-top-ta
 //import { NavigationContainer } from '@react-navigation/native';
 import { PagerView } from 'react-native-pager-view';
 import ECMessageStack from '../../components/ECMessageStack';
+import ECMessageStackEnviados from '../../components/ECMessageStackEnviados';
 
 const Tab = createMaterialTopTabNavigator();
 
@@ -33,17 +34,17 @@ export default function CommunicationScreen() {
         <Tab.Screen 
           name="Recebidos" 
           component={ECMessageStack}
-          options={{ tabBarLabel: 'Recebidos' }}
+          options={{ tabBarLabel: 'Recibidos' }}
         />
         <Tab.Screen 
           name="Enviados" 
-          component={ECEnviados}
-          options={{ tabBarLabel: 'Enviadoss' }}
+          component={ECMessageStackEnviados}
+          options={{ tabBarLabel: 'Enviados' }}
         />
         <Tab.Screen 
           name="Redatar" 
           component={ComposeMessageScreen}
-          options={{ tabBarLabel: 'Redatar' }}
+          options={{ tabBarLabel: 'Redactar' }}
         />
       </Tab.Navigator>
 

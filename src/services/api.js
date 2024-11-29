@@ -33,8 +33,8 @@ export const getDetalleMensaje = async (id) => {
 
 // Función para actualizar datos del usuario
 export const actualizarUsuario = async (datos) => {
-//  const response = await fetch(`https://api.mintrared.com/api.php/actualizacion?session=${SESSION}`, {    
-  const response = await fetch(`https://webhook.site/954812e7-8f75-49a8-bb5a-bcd4d8db7b9b?session=${SESSION}`, {
+//  const response = await fetch(`https://webhook.site/954812e7-8f75-49a8-bb5a-bcd4d8db7b9b?session=${SESSION}`, {
+  const response = await fetch(`https://api.mintrared.com/api.php/actualizacion?session=${SESSION}`, {    
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(datos),
@@ -44,7 +44,8 @@ export const actualizarUsuario = async (datos) => {
 
 // Función para enviar mensajes
 export const enviarMensaje = async (mensaje) => {
-  const response = await fetch(`https://api.mintrared.com/api.php/comunicacion/enviar?session=${SESSION}`, {
+//  const response = await fetch(`https://api.mintrared.com/api.php/comunicacion/enviar?session=${SESSION}`, {
+  const response = await fetch(`https://webhook.site/954812e7-8f75-49a8-bb5a-bcd4d8db7b9b?session=${SESSION}`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(mensaje),

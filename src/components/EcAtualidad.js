@@ -1,53 +1,48 @@
-import React from 'react';
-import { View, Text, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, Text, StyleSheet, FlatList, TouchableOpacity, Linking } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-
-const newsData = [
-  {
-    id: '1',
-    date: '14 de SEPTIEMBRE 2024',
-    title: '1 de septiembre: oremos y reflexionemos por el Cuidado de la Creación'
-  },
-  {
-    id: '2',
-    date: '14 de SEPTIEMBRE 2024',
-    title: 'Iglesia colombiana acoge el II Encuentro de responsables de prevención de abusos de las Conferencias Episcopales de Latinoamérica y el Caribe'
-  },
-  {
-    id: '3',
-    date: '14 de SEPTIEMBRE 2024',
-    title: 'Obispos colombianos dieron el primer paso hacia la consolidación de la pastoral indígena'
-  },
-  {
-    id: '4',
-    date: '14 de SEPTIEMBRE 2024',
-    title: 'Proteger la vida, vencer la indiferencia, disponerse al diálogo y conservar la institucionalidad: llamados de los Obispos al pueblo colombiano'
-  },
-  {
-    id: '5',
-    date: '14 de SEPTIEMBRE 2024',
-    title: 'La esperada y emotiva posesión canónica de monseñor Dimas Acuña Jiménez en la Diócesis de El Banco'
-  },
-];
-
-const NewsItem = ({ item }) => (
-  <View style={styles.newsItem}>
-    <View style={styles.dateContainer}>
-      <Ionicons name="calendar-outline" size={16} color="#26A69A" />
-      <Text style={styles.dateText}>{item.date}</Text>
-    </View>
-    <Text style={styles.newsTitle}>{item.title}</Text>
-  </View>
-);
+import { getPanel } from '../services/api'; // Asegúrate de tener esta función de API
 
 const EcActualidad = () => {
+  // Estado para almacenar las noticias
+  const [noticiasIzquierda, setNoticiasIzquierda] = useState([]);
+  
+  // Efecto para cargar las noticias desde la API al montar el componente
+  useEffect(() => {
+    const fetchNoticias = async () => {
+      try {
+        const data = await getPanel(); // Llamamos la API
+        setNoticiasIzquierda(data.noticias_izquierda); // Guardamos las noticias en el estado
+      } catch (error) {
+        console.error('Error al cargar las noticias:', error);
+      }
+    };
+
+    fetchNoticias(); // Ejecutamos la función para obtener los datos
+  }, []); // Solo se ejecuta al montar el componente
+
+  // Componente para mostrar una noticia
+  const NewsItem = ({ item }) => (
+    <View style={styles.newsItem}>
+      <View style={styles.dateContainer}>
+        <Ionicons name="calendar-outline" size={16} color="#26A69A" />
+        <Text style={styles.dateText}>{item.fecha}</Text>
+      </View>
+      <Text style={styles.newsTitle}>{item.titular}</Text>
+      {/* Agregar Linking para abrir la URL cuando se haga clic */}
+      <TouchableOpacity onPress={() => Linking.openURL(item.enlace)}>
+        <Text style={styles.linkText}>Leer más</Text>
+      </TouchableOpacity>
+    </View>
+  );
+
   return (
     <View style={styles.container}>
       <Text style={styles.header}>Actualidad de la Conferencia Episcopal Colombiana</Text>
       <FlatList
-        data={newsData}
+        data={noticiasIzquierda} // Usamos las noticias obtenidas de la API
         renderItem={({ item }) => <NewsItem item={item} />}
-        keyExtractor={item => item.id}
+        keyExtractor={item => item.fecha} // Usamos la fecha como ID único
         contentContainerStyle={styles.listContainer}
       />
     </View>
@@ -89,6 +84,11 @@ const styles = StyleSheet.create({
   newsTitle: {
     fontSize: 16,
     color: '#26A69A',
+  },
+  linkText: {
+    color: '#26A69A',
+    marginTop: 4,
+    fontSize: 14,
   },
 });
 
