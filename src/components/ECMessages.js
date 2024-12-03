@@ -19,17 +19,29 @@ const ECMessages = ({ route }) => {
         
         // Procesamos el mensaje y las respuestas
         const [messageBody, ...replies] = messageData.mensaje.split('----------------------------------------------------------');
-        
+          
+        // Limpieza del HTML en el mensaje y respuestas
+        const cleanHTML = (html) => {
+          return html
+            //.replace(/<\/?h[1-6]>/g, '**') // Reemplaza h1-h6 con **
+            .replace(/<\/?p>/g, '\n') // Reemplaza <p> con saltos de línea
+            .replace(/<br\s*\/?>/g, '\n') // Reemplaza <br> con saltos de línea
+            .replace(/<[^>]+>/g, '') // Remueve cualquier otra etiqueta HTML
+            .replace(/\n{2,}/g, '\n') // Remueve saltos de línea consecutivos
+            .trimStart(); // Elimina saltos de línea al comienzo
+        };
+
+          
         // Asignamos el mensaje y las respuestas
         setMessage({
           subject: messageData.asunto || "Asunto no disponible",
           from: messageData.de || "Desconocido",
           date: messageData.fecha || "Fecha no disponible",
-          body: messageBody,
+          body: cleanHTML(messageBody),
           replies: replies.map((reply) => ({ 
             from: messageData.de,  // Usamos el mismo "de" para las respuestas por ahora
             date: messageData.fecha,
-            body: reply.trim()
+            body: cleanHTML(reply.trim())
           }))
         });
         setLoading(false);
