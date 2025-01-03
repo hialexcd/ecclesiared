@@ -32,7 +32,7 @@ const ConfigurationScreen = () => {
           <Tab.Screen 
             name="EcSacerdotes" 
             component={ECStack}
-            options={{ tabBarLabel: 'Gestacionar Sacerdotes' }}
+            options={{ tabBarLabel: 'Gestionar Sacerdotes' }}
           />
           <Tab.Screen 
             name="EcParoquia" 
