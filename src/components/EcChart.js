@@ -30,10 +30,11 @@ const EcChart = () => {
     };
 
     fetchData();
-    Dimensions.addEventListener('change', updateLayout);
-    
+
+    const subscription = Dimensions.addEventListener('change', updateLayout);
+
     return () => {
-      Dimensions.removeEventListener('change', updateLayout);
+      subscription?.remove();
     };
   }, []);
 

@@ -1,19 +1,19 @@
 import React from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Linking } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { openWebPage } from '../services/api';
 
-// Importamos la función para obtener el detalle del mensaje
-import { openWebPage} from '../services/api';  // Asegúrate de que la ruta sea correcta
-
-const EcCustom = ({ navigation }) => {
-
+const EcCustom = ({ navigation, onLogout }) => {
   const navigateTo = (screenName) => {
     navigation.navigate(screenName);
   };
 
   const handleLogout = () => {
     console.log('Cerrando sesión...');
-    navigation.navigate('LoginScreen'); // Ajusta esto según tus rutas
+    if (onLogout) {
+      onLogout();
+    }
+    navigation.navigate('LoginScreen');
   };
 
   return (
@@ -43,7 +43,6 @@ const EcCustom = ({ navigation }) => {
         </TouchableOpacity>
       </ScrollView>
 
-      {/* Botones alineados al fondo */}
       <View style={styles.footerButtons}>
         <TouchableOpacity style={styles.menuItem} onPress={openWebPage}>
           <Ionicons name="globe-outline" size={24} color="#fff" />
