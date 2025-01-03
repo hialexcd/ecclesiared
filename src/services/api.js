@@ -59,14 +59,30 @@ export const actualizarUsuario = async (datos) => {
 
 // Función para enviar mensajes
 export const enviarMensaje = async (mensaje) => {
-//  const response = await fetch(`https://api.mintrared.com/api.php/comunicacion/enviar?session=${SESSION}`, {
-  const response = await fetch(`https://webhook.site/954812e7-8f75-49a8-bb5a-bcd4d8db7b9b?session=${SESSION}`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(mensaje),
-  });
-  return response.json();
+  try {
+    console.log("Enviado (payload):", JSON.stringify(mensaje) );
+    const response = await fetch(
+      `https://api.mintrared.com/api.php/comunicacion/enviar?session=${SESSION}`,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(mensaje),
+      }
+    );
+
+    const responseText = await response.text();
+    console.log("Mensaje enviado (texto respuesta):", responseText);
+
+    // Limpiar respuesta en caso de errores HTML
+    const cleanResponse = responseText.replace(/^[^{[]*/, '');
+    return JSON.parse(cleanResponse);
+  } catch (error) {
+    console.error("Error al enviar el mensaje:", error);
+    return { success: false, error: "Error de conexión o respuesta no válida" };
+  }
 };
+
+
 
 export const openWebPage = () => {
   const url = `https://gestion.mintrared.com/new/panel.php?session=${SESSION}`;
@@ -87,6 +103,75 @@ export const getEventos = async (mes, anio) => {
     return JSON.parse(cleanResponse);
   } catch (error) {
     console.error("Error al obtener los eventos:", error);
+    return [];
+  }
+};
+
+//Endpoint redactar
+// Obtener lista de países
+export const getPaises = async () => {
+  try {
+    const response = await fetch(
+      `https://api.mintrared.com/api.php/paises?session=${SESSION}`
+    );
+    const responseText = await response.text();
+    console.log("Paises (texto):", responseText);
+
+    const cleanResponse = responseText.replace(/^[^{[]*/, '');
+    return JSON.parse(cleanResponse);
+  } catch (error) {
+    console.error("Error al obtener los países:", error);
+    return [];
+  }
+};
+
+// Obtener lista de diócesis según el ID del país
+export const getDiocesis = async (idPais) => {
+  try {
+    const response = await fetch(
+      `https://api.mintrared.com/api.php/diocesis/${idPais}?session=${SESSION}`
+    );
+    const responseText = await response.text();
+    console.log("Diócesis (texto):", responseText);
+
+    const cleanResponse = responseText.replace(/^[^{[]*/, '');
+    return JSON.parse(cleanResponse);
+  } catch (error) {
+    console.error("Error al obtener las diócesis:", error);
+    return [];
+  }
+};
+
+// Obtener lista de parroquias según el ID de la diócesis
+export const getParroquias = async (idDiocesis) => {
+  try {
+    const response = await fetch(
+      `https://api.mintrared.com/api.php/parroquias/${idDiocesis}?session=${SESSION}`
+    );
+    const responseText = await response.text();
+    console.log("Parroquias (texto):", responseText);
+
+    const cleanResponse = responseText.replace(/^[^{[]*/, '');
+    return JSON.parse(cleanResponse);
+  } catch (error) {
+    console.error("Error al obtener las parroquias:", error);
+    return [];
+  }
+};
+
+// Obtener lista de usuarios según el ID de la parroquia
+export const getUsuarios = async (idParroquia) => {
+  try {
+    const response = await fetch(
+      `https://api.mintrared.com/api.php/usuarios/${idParroquia}?session=${SESSION}`
+    );
+    const responseText = await response.text();
+    console.log("Usuarios (texto):", responseText);
+
+    const cleanResponse = responseText.replace(/^[^{[]*/, '');
+    return JSON.parse(cleanResponse);
+  } catch (error) {
+    console.error("Error al obtener los usuarios:", error);
     return [];
   }
 };
