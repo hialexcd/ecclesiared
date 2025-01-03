@@ -1,57 +1,60 @@
 import React from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Image, Linking } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Linking } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+
+// Importamos la función para obtener el detalle del mensaje
+import { openWebPage} from '../services/api';  // Asegúrate de que la ruta sea correcta
 
 const EcCustom = ({ navigation }) => {
 
   const navigateTo = (screenName) => {
     navigation.navigate(screenName);
   };
-    
-  // Función para abrir la URL en el navegador
-  const openWebPage = () => {
-    Linking.openURL('https://www.ecclesiared.es/')
-      .catch((err) => console.error('Error al abrir la URL: ', err)); 
+
+  const handleLogout = () => {
+    console.log('Cerrando sesión...');
+    navigation.navigate('LoginScreen'); // Ajusta esto según tus rutas
   };
-    
+
   return (
-    <ScrollView style={styles.container}>
-      <View style={styles.profileSection}>
-        {/*<Image
-          source={{ uri: 'https://via.placeholder.com/50' }}
-          style={styles.profileImage}
-        />*/}
-        <View>
-          <Text style={styles.profileName}>Jorge</Text>
-          <Text style={styles.profileSubtext}>Mis datos </Text>
+    <View style={styles.container}>
+      <ScrollView>
+        <View style={styles.profileSection}>
+          <View>
+            <Text style={styles.profileName}>Jorge</Text>
+            <Text style={styles.profileSubtext}>Mis datos</Text>
+          </View>
         </View>
-      </View>
-      <TouchableOpacity style={styles.menuItem} onPress={() => navigateTo('Home')}>
-        <Ionicons name="grid-outline" size={24} color="#fff" />
-        <Text style={styles.menuText}>Panel de Inicio</Text>
-      </TouchableOpacity>
-      <TouchableOpacity style={styles.menuItem} onPress={() => navigateTo('Configuration')}>
-        <Ionicons name="settings-outline" size={24} color="#fff" />
-        <Text style={styles.menuText}>Configuración</Text>
-      </TouchableOpacity>
-      <TouchableOpacity style={styles.menuItem} onPress={() => navigateTo('Home')}>
-        <Ionicons name="calendar-outline" size={24} color="#fff" />
-        <Text style={styles.menuText}>Agenda Interior</Text>
-      </TouchableOpacity>
+        <TouchableOpacity style={styles.menuItem} onPress={() => navigateTo('Home')}>
+          <Ionicons name="grid-outline" size={24} color="#fff" />
+          <Text style={styles.menuText}>Panel de Inicio</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.menuItem} onPress={() => navigateTo('Configuration')}>
+          <Ionicons name="settings-outline" size={24} color="#fff" />
+          <Text style={styles.menuText}>Configuración</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.menuItem} onPress={() => navigateTo('Home')}>
+          <Ionicons name="calendar-outline" size={24} color="#fff" />
+          <Text style={styles.menuText}>Agenda Interior</Text>
+        </TouchableOpacity>
         <TouchableOpacity style={styles.menuItem} onPress={() => navigateTo('Communication')}>
           <Ionicons name="mail-outline" size={24} color="#fff" />
           <Text style={styles.menuText}>Comunicación</Text>
         </TouchableOpacity>
-      <TouchableOpacity style={styles.menuItem} onPress={() => navigateTo('Home')}>
-        <Ionicons name="book-outline" size={24} color="#fff" />
-        <Text style={styles.menuText}>L. Parroquiales</Text>
-      </TouchableOpacity>
-      <TouchableOpacity style={styles.menuItem} onPress={openWebPage}>
-        <Ionicons name="globe-outline" size={24} color="#fff" />
-        <Text style={styles.menuText}>Página web</Text>
-      </TouchableOpacity>
+      </ScrollView>
 
-    </ScrollView>
+      {/* Botones alineados al fondo */}
+      <View style={styles.footerButtons}>
+        <TouchableOpacity style={styles.menuItem} onPress={openWebPage}>
+          <Ionicons name="globe-outline" size={24} color="#fff" />
+          <Text style={styles.menuText}>Ir a la versión web</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.menuItem} onPress={handleLogout}>
+          <Ionicons name="log-out-outline" size={24} color="#fff" />
+          <Text style={styles.menuText}>Cerrar Sesión</Text>
+        </TouchableOpacity>
+      </View>
+    </View>
   );
 };
 
@@ -66,12 +69,6 @@ const styles = StyleSheet.create({
     padding: 16,
     borderBottomWidth: 1,
     borderBottomColor: '#34495e',
-  },
-  profileImage: {
-    width: 50,
-    height: 50,
-    borderRadius: 25,
-    marginRight: 16,
   },
   profileName: {
     color: '#fff',
@@ -94,16 +91,10 @@ const styles = StyleSheet.create({
     fontSize: 16,
     marginLeft: 16,
   },
-  submenuItem: {
-    backgroundColor: '#34495e',
-  },
-  submenuOption: {
-    padding: 16,
-    paddingLeft: 56,
-  },
-  submenuText: {
-    color: '#bdc3c7',
-    fontSize: 14,
+  footerButtons: {
+    borderTopWidth: 1,
+    borderTopColor: '#34495e',
+    paddingVertical: 10,
   },
 });
 

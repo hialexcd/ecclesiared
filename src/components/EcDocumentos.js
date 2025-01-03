@@ -33,9 +33,6 @@ const EcDocumentos = () => {
       <View style={styles.container}>
         <View style={styles.header}>
           <Text style={styles.headerTitle}>Documentos</Text>
-          <TouchableOpacity style={styles.addButton}>
-            <Text style={styles.addButtonText}>Ver o añadir nuevo documento</Text>
-          </TouchableOpacity>
         </View>
         <View style={styles.listHeader}>
           <Text style={styles.listHeaderText}>Documento</Text>

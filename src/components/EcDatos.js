@@ -2,6 +2,9 @@ import React, { useState, useEffect } from 'react';  // Asegúrate de incluir us
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
 import { CheckBox } from 'react-native-elements';
 import { getConfiguracion, actualizarUsuario } from '../services/api';  // Importa la función desde endpoints
+import { Alert } from 'react-native'; //para la alerta de act exitosa
+
+//en configurationScreen esta el menu con gestionar sacerdotes y datos de la parroquia
 
 const EcDatos = () => {
   const [nombre, setNombre] = useState('');
@@ -32,27 +35,38 @@ const EcDatos = () => {
   }, []); // Solo se ejecuta una vez cuando el componente se monta
   /**/  
     
-    const handleSubmit = async () => {
-      // Recopilar los datos del formulario
-      const datosActualizados = {
-        nombre: nombre,
-        apellidos: apellidos,
-        email: email,
-        telefono: telefono,
-      };
+const handleSubmit = async () => {
+  // Recopilar los datos del formulario
+  const datosActualizados = {
+    nombre: nombre,
+    apellidos: apellidos,
+    email: email,
+    telefono: telefono,
+  };
 
-      try {
-        // Llamar a la función de actualización con los datos
-        const response = await actualizarUsuario(datosActualizados);
+  try {
+    // Llamar a la función de actualización con los datos
+    const response = await actualizarUsuario(datosActualizados);
 
-        // Manejar la respuesta, por ejemplo, mostrar un mensaje de éxito o redirigir
-        console.log('Datos actualizados correctamente', response);
-        // Aquí puedes añadir una notificación o redirigir a otra pantalla si es necesario
-      } catch (error) {
-        // Manejar el error
-        console.error('Error al actualizar los datos', error);
-      }
-    };
+     // Mostrar la respuesta completa en la consola
+    console.log('Respuesta completa en ecdatos:', JSON.stringify(response, null, 2));
+
+    // Mostrar la respuesta completa en una alerta (opcional)
+    //Alert.alert('Respuesta', JSON.stringify(response, null, 2));
+      
+    // Manejar la respuesta según el resultado
+    if (response.success === 1) {
+      Alert.alert('Actualización', 'Datos actualizados correctamente');
+    } else {
+      Alert.alert('Error', 'Error al actualizar los datos');
+    }
+  } catch (error) {
+    // Manejar el error
+    console.error('Error al actualizar los datos', error);
+    Alert.alert('Error', 'Error al actualizar los datos', error);
+  }
+};
+
 
   return (
     <ScrollView style={styles.container}>

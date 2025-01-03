@@ -28,16 +28,18 @@ const ConfigurationScreen = () => {
           component={EcDatos}
           options={{ tabBarLabel: 'Mis Datos' }}
         />
-        <Tab.Screen 
-          name="EcSacerdotes" 
-          component={ECStack}
-          options={{ tabBarLabel: 'Gestacionar Sacerdotes' }}
-        />
-        <Tab.Screen 
-          name="EcParoquia" 
-          component={ECParoquia}
-          options={{ tabBarLabel: 'Datos de la Parroquia' }}
-        />
+          {/* 
+          <Tab.Screen 
+            name="EcSacerdotes" 
+            component={ECStack}
+            options={{ tabBarLabel: 'Gestacionar Sacerdotes' }}
+          />
+          <Tab.Screen 
+            name="EcParoquia" 
+            component={ECParoquia}
+            options={{ tabBarLabel: 'Datos de la Parroquia' }}
+          />
+          */}
       </Tab.Navigator>
 
         </View>
