@@ -1,17 +1,79 @@
-import React, { useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, Text, StyleSheet, TouchableOpacity, Alert } from 'react-native';
 import { Calendar } from 'react-native-calendars';
 import { Ionicons } from '@expo/vector-icons';
+import { getEventos } from '../services/api'; // Importar la función
 
 const EcAgenda = () => {
   const [currentMonth, setCurrentMonth] = useState('2024-09');
+  const [markedDates, setMarkedDates] = useState({});
+  const [eventos, setEventos] = useState([]);
 
-  const markedDates = {
-    '2024-09-06': { selected: true, selectedColor: '#26A69A' },
-    '2024-09-10': { selected: true, selectedColor: '#D32F2F' },
-    '2024-09-20': { selected: true, selectedColor: '#D32F2F' },
-    '2024-09-23': { selected: true, selectedColor: '#26A69A' },
-  };
+  // Cargar eventos cuando cambia el mes
+  useEffect(() => {
+    const fetchEventos = async () => {
+      const [anio, mes] = currentMonth.split('-');
+      const eventosData = await getEventos(mes, anio);
+
+      // Convertir eventos en formato compatible con markedDates
+      const newMarkedDates = {};
+      eventosData.forEach((evento) => {
+        const fecha = `${anio}-${mes}-${evento.dia.padStart(2, '0')}`;
+        newMarkedDates[fecha] = {
+          selected: true,
+          selectedColor: evento.diocesis ? '#D32F2F' : '#26A69A', // Rojo si es diocesano, verde si es parroquial
+          event: evento, // Adjuntar datos del evento
+        };
+      });
+
+      setMarkedDates(newMarkedDates);
+      setEventos(eventosData);
+    };
+
+    fetchEventos();
+  }, [currentMonth]);
+
+//decodifica el json para que se muestre bien
+const decodeHtmlEntities = (text) => {
+  return text
+    .replace(/&aacute;/g, 'á')
+    .replace(/&eacute;/g, 'é')
+    .replace(/&iacute;/g, 'í')
+    .replace(/&oacute;/g, 'ó')
+    .replace(/&uacute;/g, 'ú')
+    .replace(/&Aacute;/g, 'Á')
+    .replace(/&Eacute;/g, 'É')
+    .replace(/&Iacute;/g, 'Í')
+    .replace(/&Oacute;/g, 'Ó')
+    .replace(/&Uacute;/g, 'Ú')
+    .replace(/&ntilde;/g, 'ñ')
+    .replace(/&Ntilde;/g, 'Ñ')
+    .replace(/&uuml;/g, 'ü')
+    .replace(/&Uuml;/g, 'Ü')
+    .replace(/&nbsp;/g, ' ')
+    .replace(/&amp;/g, '&')
+    .replace(/&quot;/g, '"')
+    .replace(/&#39;/g, "'")
+    .replace(/ReuniÃ³n/g, 'Reunión') // Caso específico mal codificado
+    .replace(/economÃ­a/g, 'economía') // Caso específico de economía mal codificado
+    .replace(/<br\s*\/?>/g, '\n') // Reemplaza <br> o <br /> por salto de línea
+    .replace(/<[^>]+>/g, ''); // Elimina cualquier otra etiqueta HTML
+};
+    
+// Manejar clic en un día marcado
+const handleDayPress = (day) => {
+  const event = markedDates[day.dateString]?.event;
+  if (event) {
+    Alert.alert(
+      `Evento del ${day.dateString}`,
+      `Día: ${event.dia}\n${decodeHtmlEntities(event.contenido)}`, // Decodificar el contenido
+      [{ text: 'OK' }]
+    );
+  } else {
+    Alert.alert('Sin eventos', 'No hay eventos programados para este día.');
+  }
+};
+
 
   return (
     <View style={styles.container}>
@@ -30,6 +92,7 @@ const EcAgenda = () => {
         current={currentMonth}
         onMonthChange={(month) => setCurrentMonth(month.dateString)}
         markedDates={markedDates}
+        onDayPress={handleDayPress} // Detectar clic en un día
         theme={{
           calendarBackground: '#ffffff',
           textSectionTitleColor: '#b6c1cd',

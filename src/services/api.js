@@ -72,3 +72,21 @@ export const openWebPage = () => {
   const url = `https://gestion.mintrared.com/new/panel.php?session=${SESSION}`;
   Linking.openURL(url).catch((err) => console.error('Error al abrir la URL: ', err));
 };
+
+//enpoint de los eventos
+export const getEventos = async (mes, anio) => {
+  try {
+    const response = await fetch(
+      `https://api.mintrared.com/api.php/eventos/${mes}/${anio}?session=${SESSION}`
+    );
+    const responseText = await response.text();
+    console.log("Respuesta eventos (texto):", responseText);
+
+    // Limpiar respuesta en caso de errores HTML
+    const cleanResponse = responseText.replace(/^[^{[]*/, '');
+    return JSON.parse(cleanResponse);
+  } catch (error) {
+    console.error("Error al obtener los eventos:", error);
+    return [];
+  }
+};
