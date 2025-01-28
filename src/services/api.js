@@ -1,22 +1,62 @@
 import { Linking } from 'react-native'; // Para openWeb
 
+import { Alert } from "react-native"; //para alertas
+import * as Notifications from "expo-notifications";// para lo push...
+import * as Device from "expo-device";
+import { Platform } from "react-native";
+
 // Manejo de sesión en memoria
 let currentSession = null;
 
-// Función de login que consume el endpoint
+// Función para obtener el Push Token real
+const getPushToken = async () => {
+  let token = null;
+
+  if (Device.isDevice) {
+    const { status: existingStatus } = await Notifications.getPermissionsAsync();
+    let finalStatus = existingStatus;
+
+    if (existingStatus !== "granted") {
+      const { status } = await Notifications.requestPermissionsAsync();
+      finalStatus = status;
+    }
+
+    if (finalStatus === "granted") {
+      token = (await Notifications.getExpoPushTokenAsync()).data;
+      console.log("Push Token obtenido:", token);
+    } else {
+      console.log("Permisos de notificaciones no concedidos.");
+    }
+
+    if (Platform.OS === "android") {
+      Notifications.setNotificationChannelAsync("default", {
+        name: "default",
+        importance: Notifications.AndroidImportance.MAX,
+      });
+    }
+  } else {
+    console.log("No se puede usar en un simulador.");
+  }
+
+  return token;
+};
+
+// Función de login adaptada con alerta para mostrar el push_token
 export const login = async (username, password) => {
   try {
-    // URL del endpoint
-    const url = "https://api.mintrared.com/api.php/login";
+    const pushToken = await getPushToken(); // Obtener el Push Token dinámicamente
+    if (!pushToken) {
+      throw new Error("No se pudo obtener el Push Token.");
+    }
 
-    // Datos a enviar al endpoint
+    const url = "https://api.mintrared.com/api.php/login"; // Endpoint del login
+
     const data = {
       user: username,
       pwd: password,
-      push_token: "asd1231dasd", // Push token fijo
+      push_token: pushToken, // Enviar el Push Token real
     };
 
-    // Realizar la solicitud POST al endpoint
     const response = await fetch(url, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -25,16 +65,30 @@ export const login = async (username, password) => {
 
     const responseData = await response.json();
 
-    // Manejar la respuesta del endpoint
     if (responseData && responseData.response && responseData.response !== "0") {
-      currentSession = responseData.response; // Guardar sesión
+      currentSession = responseData.response; // Guardar sesión en memoria
+
+      // Mostrar alerta con el Push Token para pruebas
+      Alert.alert(
+        "Login Exitoso",
+        `Push Token: ${pushToken}\nSession: ${currentSession}`,
+        [{ text: "OK" }]
+      );
+
+      console.log("Login exitoso. Sesión iniciada:", currentSession);
       return { success: true, session: currentSession };
     } else {
+      console.log("Login fallido: Credenciales incorrectas.");
       return { success: false, error: "Credenciales incorrectas" };
     }
   } catch (error) {
     console.error("Error al intentar iniciar sesión:", error);
-    return { success: false, error: "Error de conexión" };
+    Alert.alert(
+      "Error",
+      "No se pudo completar el login. Por favor, intenta nuevamente.",
+      [{ text: "OK" }]
+    );
+    return { success: false, error: "Error de conexión o configuración" };
   }
 };
 
