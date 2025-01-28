@@ -8,11 +8,17 @@ import { login, logout } from './src/services/api';
 export default function App() {
   const [loggedIn, setLoggedIn] = useState(false);
 
-  const handleLogin = (username, password) => {
-    if (login(username, password)) {
-      setLoggedIn(true);
-    } else {
-      alert('Credenciales inválidas');
+  const handleLogin = async (username, password) => {
+    try {
+      const result = await login(username, password); // Esperar la promesa de `login`
+      if (result.success) {
+        setLoggedIn(true); // Iniciar sesión si el login es exitoso
+      } else {
+        alert(result.error || 'Credenciales inválidas...'); // Mostrar error si falla
+      }
+    } catch (error) {
+      console.error("Error en el proceso de inicio de sesión:", error);
+      alert('Error inesperado. Por favor, inténtalo de nuevo.');
     }
   };
 
