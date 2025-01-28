@@ -1,19 +1,41 @@
 import { Linking } from 'react-native'; // Para openWeb
 
 // Manejo de sesión en memoria
-const SESSION = "fc3791a0-4960-4b99-99ec-f87e9c991286"; // Hardcodeada para las demás funciones
-let currentSession = null; // Variable para manejar sesión en memoria
+let currentSession = null;
 
-// Función de login
-export const login = (username, password) => {
-  const hardcodedUser = "admin";
-  const hardcodedPassword = "1234";
+// Función de login que consume el endpoint
+export const login = async (username, password) => {
+  try {
+    // URL del endpoint
+    const url = "https://api.mintrared.com/api.php/login";
 
-  if (username === hardcodedUser && password === hardcodedPassword) {
-    currentSession = SESSION; // Guardar sesión en memoria
-    return true;
+    // Datos a enviar al endpoint
+    const data = {
+      user: username,
+      pwd: password,
+      push_token: "asd1231dasd", // Push token fijo
+    };
+
+    // Realizar la solicitud POST al endpoint
+    const response = await fetch(url, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data),
+    });
+
+    const responseData = await response.json();
+
+    // Manejar la respuesta del endpoint
+    if (responseData && responseData.response && responseData.response !== "0") {
+      currentSession = responseData.response; // Guardar sesión
+      return { success: true, session: currentSession };
+    } else {
+      return { success: false, error: "Credenciales incorrectas" };
+    }
+  } catch (error) {
+    console.error("Error al intentar iniciar sesión:", error);
+    return { success: false, error: "Error de conexión" };
   }
-  return false;
 };
 
 // Verificar si el usuario está autenticado
