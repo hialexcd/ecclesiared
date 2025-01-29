@@ -4,8 +4,12 @@ import { StatusBar } from 'expo-status-bar';
 import LoginScreen from './src/screens/LoginScreen';
 import DrawerNavigation from './src/components/EcDrawer';
 import { login, logout } from './src/services/api';
+import registerNNPushToken from 'native-notify';
 
 export default function App() {
+  // Inicializar NativeNotify con el método correcto
+  registerNNPushToken(26947, "X2IskvSUeT1DcANCxJuZDD");
+    
   const [loggedIn, setLoggedIn] = useState(false);
 
   const handleLogin = async (username, password) => {
