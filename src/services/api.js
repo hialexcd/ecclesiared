@@ -1,46 +1,58 @@
-import { Linking } from 'react-native'; // Para openWeb
+import { Alert, Linking } from "react-native"; // para openweb linking
+import { registerIndieID } from 'native-notify'; //estos dos para el push
+import axios from 'axios';
 
 // Manejo de sesión en memoria
 let currentSession = null;
 
-// Función de login que consume el endpoint
+// Función de login adaptada para usar Indie ID
 export const login = async (username, password) => {
   try {
-    // URL del endpoint
-    const url = "https://api.mintrared.com/api.php/login";
+    // Registrar al usuario en NativeNotify con su email como Indie ID
+   registerIndieID(username, 26947, "X2IskvSUeT1DcANCxJuZDD");
 
-    // Datos a enviar al endpoint
+    const url = "https://api.mintrared.com/api.php/login"; // Endpoint del login
+
     const data = {
       user: username,
       pwd: password,
-      push_token: "asd1231dasd", // Push token fijo
+      push_token: username, // Envía el email del usuario como identificador
     };
 
-    // Realizar la solicitud POST al endpoint
     const response = await fetch(url, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data),
     });
 
-    // Validar el estado de la respuesta
     if (!response.ok) {
       return { success: false, error: "Error en la conexión con el servidor" };
     }
 
-    // Procesar los datos de la respuesta
     const responseData = await response.json();
 
-    // Manejar la respuesta del endpoint
     if (responseData && responseData.response && responseData.response !== "0") {
-      currentSession = responseData.response; // Guardar sesión
+      currentSession = responseData.response; // Guardar sesión en memoria
+
+      Alert.alert(
+        "Login Exitoso",
+        `Usuario registrado: ${username}\nSession: ${currentSession}`,
+        [{ text: "OK" }]
+      );
+
+      console.log("Login exitoso. Sesión iniciada:", currentSession);
       return { success: true, session: currentSession };
     } else {
-      //return { success: false, error: "Credenciales incorrectas con "+username+" y "+password };
-      return { success: false, error: "Credenciales incorrectas " };
+      console.log("Login fallido: Credenciales incorrectas.");
+      return { success: false, error: `Credenciales incorrectas para ${username}` };
     }
   } catch (error) {
     console.error("Error al intentar iniciar sesión:", error);
+    Alert.alert(
+      "Error",
+      `No se pudo completar el login: ${error.message || "Error desconocido"}`,
+      [{ text: "OK" }]
+    );
     return { success: false, error: "Error de conexión o configuración" };
   }
 };
