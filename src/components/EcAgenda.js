@@ -113,14 +113,7 @@ const handleDayPress = (day) => {
           textDayHeaderFontSize: 16,
         }}
       />
-      <View style={styles.navigationButtons}>
-        <TouchableOpacity style={styles.navButton}>
-          <Ionicons name="chevron-back" size={24} color="white" />
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.navButton}>
-          <Ionicons name="chevron-forward" size={24} color="white" />
-        </TouchableOpacity>
-      </View>
+      
     </View>
   );
 };
