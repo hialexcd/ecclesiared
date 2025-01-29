@@ -75,25 +75,25 @@ export const getPanel = async () => {
     },
     noticias_izquierda: [
       {
-        fecha: "2024-11-28",
+        fecha: "2024-11-22",
         titular:
           "Obispos colombianos convocan colecta nacional para ayudar a reconstruir edificaciones de la Iglesia en Guapi afectadas tras el atentado",
         enlace: "https://www.cec.org.co/sistema-informativo/actualidad/obispos-colombianos-convocan-colecta-nacional-para-ayudar",
       },
       {
-        fecha: "2024-11-28",
+        fecha: "2024-11-23",
         titular:
           "Emergencia invernal y paro armado en el Chocó: Obispos de Istmina-Tadó y de Quibdó piden ayuda urgente para las comunidades",
         enlace: "https://www.cec.org.co/sistema-informativo/actualidad/emergencia-invernal-y-paro-armado-en-el-choco-obispos-de-istmina",
       },
       {
-        fecha: "2024-11-28",
+        fecha: "2024-11-24",
         titular:
           "Obispos colombianos convocan la solidaridad de todos los fieles y entidades para ayudar a los damnificados por la ola invernal",
         enlace: "https://www.cec.org.co/sistema-informativo/actualidad/obispos-colombianos-convocan-la-solidaridad-de-todos-los-fieles-y",
       },
       {
-        fecha: "2024-11-28",
+        fecha: "2024-11-26",
         titular:
           "Delegación de la Iglesia colombiana está lista para participar en el Sexto Congreso Americano Misionero que se celebrará en Puerto Rico",
         enlace: "https://www.cec.org.co/sistema-informativo/actualidad/delegacion-de-la-iglesia-colombiana-esta-lista-para-participar-en-el",
@@ -140,7 +140,6 @@ export const getPanel = async () => {
   };
   return data; // Devuelve el JSON directamente
 };
-
 
 // Funciones para comunicaciones
 export const getMensajesEnviados = async () => {
