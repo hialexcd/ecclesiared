@@ -1,21 +1,23 @@
-import { View, Text, StyleSheet, SafeAreaView, ScrollView } from 'react-native'
-import React from 'react'
+import { View, Text, StyleSheet } from 'react-native';
+import React from 'react';
 import EcChart from '../components/EcChart';
 import EcDocumentos from '../components/EcDocumentos';
 import EcAgenda from '../components/EcAgenda';
 import EcActualidad from '../components/EcAtualidad';
 
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
-//import { NavigationContainer } from '@react-navigation/native';
 import { PagerView } from 'react-native-pager-view';
 
 const Tab = createMaterialTopTabNavigator();
 
 export default function MainPanel() {
   return (
-        <View style={styles.container}>
+    <View style={styles.container}>
       <Tab.Navigator
-        pager={props => <PagerView {...props} />}
+        pager={(props) => {
+          const { key, ...otherProps } = props; // Elimina "key" del spread
+          return <PagerView {...otherProps} />;
+        }}
         screenOptions={{
           tabBarLabelStyle: { fontSize: 8 },
           tabBarStyle: { backgroundColor: '#26A69A' },
@@ -45,29 +47,28 @@ export default function MainPanel() {
           options={{ tabBarLabel: 'Actualidad' }}
         />
       </Tab.Navigator>
-
-        </View>
-  )
+    </View>
+  );
 }
 
 const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      backgroundColor: '#F3F3F4'
-    },
-    eccImage:{
-        flex: 0.2,
-        justifyContent:'center',
-        alignItems:'center',
-    },
-    ecComun:{
-        flex:1,
-        justifyContent:'center',
-        alignItems:'center'
-    }
-    ,placeholderContainer: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-      }
-  });
+  container: {
+    flex: 1,
+    backgroundColor: '#F3F3F4',
+  },
+  eccImage: {
+    flex: 0.2,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  ecComun: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  placeholderContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+});
