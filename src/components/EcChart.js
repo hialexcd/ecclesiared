@@ -51,7 +51,7 @@ const EcChart = () => {
     datasets: Object.entries(toggles).filter(([_, value]) => value).map(([key, _], index) => ({
       data: estadisticas[key],  // Usar los datos de la API
       color: (opacity = 1) => {
-        const colors = ['#26A69A', '#EF5350', '#78909C', '#FFA726', '#42A5F5'];
+        const colors = ['#1AB394', '#EF5350', '#78909C', '#FFA726', '#42A5F5'];
         return `rgba(${parseInt(colors[index].slice(1, 3), 16)}, ${parseInt(colors[index].slice(3, 5), 16)}, ${parseInt(colors[index].slice(5, 7), 16)}, ${opacity})`;
       },
       strokeWidth: 2
@@ -78,7 +78,7 @@ const EcChart = () => {
       <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.togglesScroll}>
         <View style={styles.togglesContainer}>
           {labels.map((label, index) => (
-            <ToggleButton key={label} label={label} color={['#26A69A', '#EF5350', '#78909C', '#FFA726', '#42A5F5'][index]} />
+            <ToggleButton key={label} label={label} color={['#1AB394', '#EF5350', '#78909C', '#FFA726', '#42A5F5'][index]} />
           ))}
         </View>
       </ScrollView>
@@ -133,7 +133,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: 'bold',
     color: 'white',
-    backgroundColor: '#26A69A',
+    backgroundColor: '#1AB394',
     padding: 12,
     borderRadius: 4,
     marginBottom: 16,

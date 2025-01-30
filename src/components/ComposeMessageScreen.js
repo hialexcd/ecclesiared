@@ -226,7 +226,7 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: 'bold',
     marginBottom: 16,
-    color: '#26A69A',
+    color: '#1AB394',
   },
   label: {
     fontSize: 16,
@@ -253,7 +253,7 @@ const styles = StyleSheet.create({
     textAlignVertical: 'top',
   },
   sendButton: {
-    backgroundColor: '#26A69A',
+    backgroundColor: '#1AB394',
     padding: 16,
     alignItems: 'center',
     borderRadius: 5,

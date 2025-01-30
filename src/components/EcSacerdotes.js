@@ -76,7 +76,7 @@ const styles = StyleSheet.create({
   },
   searchBar: {
     height: 40,
-    borderColor: '#26A69A',
+    borderColor: '#1AB394',
     borderWidth: 1,
     borderRadius: 8,
     paddingHorizontal: 10,
@@ -84,7 +84,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
   },
   header: {
-    backgroundColor: '#26A69A',
+    backgroundColor: '#1AB394',
     padding: 15,
     marginBottom: 10,
     borderRadius: 8,
@@ -118,7 +118,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     right: 20,
     bottom: 20,
-    backgroundColor: '#26A69A',
+    backgroundColor: '#1AB394',
     borderRadius: 28,
     elevation: 8,
     shadowColor: '#000',

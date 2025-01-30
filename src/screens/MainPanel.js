@@ -20,7 +20,7 @@ export default function MainPanel() {
         }}
         screenOptions={{
           tabBarLabelStyle: { fontSize: 8 },
-          tabBarStyle: { backgroundColor: '#26A69A' },
+          tabBarStyle: { backgroundColor: '#1AB394' },
           tabBarActiveTintColor: 'white',
           tabBarInactiveTintColor: 'rgba(255,255,255,0.7)',
           tabBarIndicatorStyle: { backgroundColor: 'white' },

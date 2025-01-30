@@ -1,8 +1,21 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Alert } from 'react-native';
-import { Calendar } from 'react-native-calendars';
+import { Calendar, LocaleConfig } from 'react-native-calendars';
 import { Ionicons } from '@expo/vector-icons';
 import { getEventos } from '../services/api'; // Importar la función
+
+// Configuración del idioma en español
+LocaleConfig.locales['es'] = {
+  monthNames: [
+    'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
+    'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
+  ],
+  monthNamesShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
+  dayNames: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
+  dayNamesShort: ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'],
+  today: 'Hoy'
+};
+LocaleConfig.defaultLocale = 'es';
 
 const EcAgenda = () => {
   const [currentMonth, setCurrentMonth] = useState('2024-09');
@@ -15,14 +28,13 @@ const EcAgenda = () => {
       const [anio, mes] = currentMonth.split('-');
       const eventosData = await getEventos(mes, anio);
 
-      // Convertir eventos en formato compatible con markedDates
       const newMarkedDates = {};
       eventosData.forEach((evento) => {
         const fecha = `${anio}-${mes}-${evento.dia.padStart(2, '0')}`;
         newMarkedDates[fecha] = {
           selected: true,
-          selectedColor: evento.diocesis ? '#D32F2F' : '#26A69A', // Rojo si es diocesano, verde si es parroquial
-          event: evento, // Adjuntar datos del evento
+          selectedColor: evento.diocesis ? '#D32F2F' : '#1AB394',
+          event: evento,
         };
       });
 
@@ -33,7 +45,6 @@ const EcAgenda = () => {
     fetchEventos();
   }, [currentMonth]);
 
-//decodifica el json para que se muestre bien
 const decodeHtmlEntities = (text) => {
   return text
     .replace(/&aacute;/g, 'á')
@@ -54,19 +65,16 @@ const decodeHtmlEntities = (text) => {
     .replace(/&amp;/g, '&')
     .replace(/&quot;/g, '"')
     .replace(/&#39;/g, "'")
-    .replace(/ReuniÃ³n/g, 'Reunión') // Caso específico mal codificado
-    .replace(/economÃ­a/g, 'economía') // Caso específico de economía mal codificado
-    .replace(/<br\s*\/?>/g, '\n') // Reemplaza <br> o <br /> por salto de línea
-    .replace(/<[^>]+>/g, ''); // Elimina cualquier otra etiqueta HTML
+    .replace(/<br\s*\/?>/g, '\n')
+    .replace(/<[^>]+>/g, '');
 };
     
-// Manejar clic en un día marcado
 const handleDayPress = (day) => {
   const event = markedDates[day.dateString]?.event;
   if (event) {
     Alert.alert(
       `Evento del ${day.dateString}`,
-      `Día: ${event.dia}\n${decodeHtmlEntities(event.contenido)}`, // Decodificar el contenido
+      `Día: ${event.dia}\n${decodeHtmlEntities(event.contenido)}`,
       [{ text: 'OK' }]
     );
   } else {
@@ -74,25 +82,17 @@ const handleDayPress = (day) => {
   }
 };
 
-
   return (
     <View style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.headerText}>Agenda Interior</Text>
-        <View style={styles.buttonContainer}>
-          <TouchableOpacity style={[styles.button, styles.webButton]}>
-            <Text style={styles.buttonText}>Añadir eventos a la web</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={[styles.button, styles.agendaButton]}>
-            <Text style={styles.buttonText}>Añadir eventos a la agenda</Text>
-          </TouchableOpacity>
-        </View>
       </View>
       <Calendar
         current={currentMonth}
         onMonthChange={(month) => setCurrentMonth(month.dateString)}
         markedDates={markedDates}
-        onDayPress={handleDayPress} // Detectar clic en un día
+        onDayPress={handleDayPress}
+        firstDay={1} // Comienza la semana en lunes
         theme={{
           calendarBackground: '#ffffff',
           textSectionTitleColor: '#b6c1cd',
@@ -103,8 +103,8 @@ const handleDayPress = (day) => {
           textDisabledColor: '#d9e1e8',
           dotColor: '#00adf5',
           selectedDotColor: '#ffffff',
-          arrowColor: '#26A69A',
-          monthTextColor: '#26A69A',
+          arrowColor: '#1AB394',
+          monthTextColor: '#1AB394',
           textDayFontWeight: '300',
           textMonthFontWeight: 'bold',
           textDayHeaderFontWeight: '300',
@@ -113,7 +113,6 @@ const handleDayPress = (day) => {
           textDayHeaderFontSize: 16,
         }}
       />
-      
     </View>
   );
 };
@@ -124,53 +123,13 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
   },
   header: {
-    backgroundColor: '#26A69A',
+    backgroundColor: '#1AB394',
     padding: 16,
   },
   headerText: {
     color: 'white',
     fontSize: 18,
     fontWeight: 'bold',
-  },
-  buttonContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginTop: 10,
-  },
-  button: {
-    padding: 10,
-    borderRadius: 5,
-  },
-  webButton: {
-    backgroundColor: '#26A69A',
-  },
-  agendaButton: {
-    backgroundColor: '#FF9800',
-  },
-  buttonText: {
-    color: 'white',
-    fontSize: 12,
-  },
-  navigationButtons: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    padding: 16,
-  },
-  navButton: {
-    backgroundColor: '#26A69A',
-    borderRadius: 20,
-    width: 40,
-    height: 40,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  footer: {
-    backgroundColor: '#26A69A',
-    padding: 16,
-  },
-  footerText: {
-    color: 'white',
-    fontSize: 14,
   },
 });
 

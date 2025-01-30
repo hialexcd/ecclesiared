@@ -22,7 +22,7 @@ const EcDocumentos = () => {
         <View style={styles.documentItem}>
           <Text style={styles.documentName}>{item.name}</Text>
           <TouchableOpacity style={styles.downloadButton}>
-            <Ionicons name="download-outline" size={24} color="#26A69A" />
+            <Ionicons name="download-outline" size={24} color="#1AB394" />
           </TouchableOpacity>
         </View>
       );
@@ -81,7 +81,7 @@ const EcDocumentos = () => {
       <View key={doc.id} style={styles.documentItem}>
         <Text style={styles.documentName}>{doc.name}</Text>
         <TouchableOpacity style={styles.downloadButton}>
-          <Ionicons name="download-outline" size={24} color="#26A69A" />
+          <Ionicons name="download-outline" size={24} color="#1AB394" />
         </TouchableOpacity>
       </View>
     );

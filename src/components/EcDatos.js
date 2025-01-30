@@ -155,7 +155,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
   },
   header: {
-    backgroundColor: '#26A69A',
+    backgroundColor: '#1AB394',
     padding: 15,
   },
   headerText: {
@@ -200,7 +200,7 @@ const styles = StyleSheet.create({
     color: 'red',
   },
   submitButton: {
-    backgroundColor: '#26A69A',
+    backgroundColor: '#1AB394',
     padding: 15,
     borderRadius: 4,
     alignItems: 'center',

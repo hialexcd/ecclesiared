@@ -19,8 +19,8 @@ const Header = ({ navigation }) => {
             style={styles.logo}
           />
         </View>
-        <TouchableOpacity style={styles.menuButton}>
-          <Ionicons name="notifications" size={24} color="#1abc9c" />
+        <TouchableOpacity style={styles.menuButton} onPress={() => navigation.navigate('Communication')}>
+          <Ionicons name="mail-outline" size={24} color="#1abc9c" />
         </TouchableOpacity>
       </View>
     </SafeAreaView>

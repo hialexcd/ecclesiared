@@ -277,7 +277,7 @@ const styles = StyleSheet.create({
   sectionTitle: {
     fontSize: 18,
     fontWeight: 'bold',
-    backgroundColor: '#26A69A',
+    backgroundColor: '#1AB394',
     color: '#fff',
     padding: 10,
     marginVertical: 10,
@@ -327,7 +327,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   submitButton: {
-    backgroundColor: '#26A69A',
+    backgroundColor: '#1AB394',
     padding: 15,
     borderRadius: 4,
     alignItems: 'center',

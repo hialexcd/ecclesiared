@@ -62,7 +62,7 @@ const ECMessages = ({ route }) => {
   if (loading) {
     return (
       <View style={styles.loadingContainer}>
-        <ActivityIndicator size="large" color="#26A69A" />
+        <ActivityIndicator size="large" color="#1AB394" />
       </View>
     );
   }
@@ -94,7 +94,7 @@ const ECMessages = ({ route }) => {
           multiline
         />
         <TouchableOpacity style={styles.sendButton} onPress={handleSendReply}>
-          <Ionicons name="send" size={24} color="#26A69A" />
+          <Ionicons name="send" size={24} color="#1AB394" />
         </TouchableOpacity>
       </View>
     </View>

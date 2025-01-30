@@ -23,7 +23,7 @@ const EcDocumentos = () => {
         <View style={styles.documentItem}>
           <Text style={styles.documentName}>{item.name}</Text>
           <TouchableOpacity style={styles.downloadButton}>
-            <Ionicons name="download-outline" size={24} color="#26A69A" />
+            <Ionicons name="download-outline" size={24} color="#1AB394" />
           </TouchableOpacity>
         </View>
       );
@@ -72,7 +72,7 @@ const styles = StyleSheet.create({
   headerTitle: {
     fontSize: 18,
     fontWeight: 'bold',
-    color: '#26A69A',
+    color: '#1AB394',
   },
   addButton: {
     backgroundColor: '#FF9800',
@@ -128,7 +128,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     right: 16,
     bottom: 16,
-    backgroundColor: '#26A69A',
+    backgroundColor: '#1AB394',
     borderRadius: 20,
     width: 40,
     height: 40,

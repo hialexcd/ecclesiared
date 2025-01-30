@@ -74,7 +74,7 @@ useEffect(() => {
         <Ionicons 
           name={item.isReply ? "arrow-undo" : "mail"} 
           size={20} 
-          color="#26A69A" 
+          color="#1AB394" 
         />
         <Text style={styles.fromText} numberOfLines={1}>{item.from}</Text>
       </View>
@@ -83,10 +83,10 @@ useEffect(() => {
         <Text style={styles.dateText}>{item.date}</Text>
         <View style={styles.actions}>
           <TouchableOpacity style={styles.actionButton}>
-            <Ionicons name="eye-outline" size={20} color="#26A69A" />
+            <Ionicons name="eye-outline" size={20} color="#1AB394" />
           </TouchableOpacity>
           <TouchableOpacity style={styles.actionButton}>
-            <Ionicons name="trash-outline" size={20} color="#26A69A" />
+            <Ionicons name="trash-outline" size={20} color="#1AB394" />
           </TouchableOpacity>
         </View>
       </View>
@@ -97,7 +97,7 @@ useEffect(() => {
     if (!loading) return null;
     return (
       <View style={styles.footer}>
-        <ActivityIndicator size="small" color="#26A69A" />
+        <ActivityIndicator size="small" color="#1AB394" />
       </View>
     );
   };
@@ -111,7 +111,7 @@ useEffect(() => {
   return (
     <View style={styles.container}>
       <View style={styles.searchContainer}>
-        <Ionicons name="search" size={20} color="#26A69A" style={styles.searchIcon} />
+        <Ionicons name="search" size={20} color="#1AB394" style={styles.searchIcon} />
         <TextInput
           style={styles.searchInput}
           placeholder="Buscar mensajes recibidos..."

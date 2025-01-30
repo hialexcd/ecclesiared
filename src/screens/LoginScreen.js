@@ -71,7 +71,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
   },
   button: {
-    backgroundColor: '#28ae92',
+    backgroundColor: '#1AB394',
     paddingVertical: 15,
     borderRadius: 5,
     alignItems: 'center',
@@ -84,7 +84,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   forgotPassword: {
-    color: '#28ae92',
+    color: '#1AB394',
     textDecorationLine: 'underline',
     marginTop: 10,
     fontSize: 14,

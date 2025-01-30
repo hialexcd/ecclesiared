@@ -25,7 +25,7 @@ const EcActualidad = () => {
   const NewsItem = ({ item }) => (
     <View style={styles.newsItem}>
       <View style={styles.dateContainer}>
-        <Ionicons name="calendar-outline" size={16} color="#26A69A" />
+        <Ionicons name="calendar-outline" size={16} color="#1AB394" />
         <Text style={styles.dateText}>{item.fecha}</Text>
       </View>
       <Text style={styles.newsTitle}>{item.titular}</Text>
@@ -55,7 +55,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
   },
   header: {
-    backgroundColor: '#26A69A',
+    backgroundColor: '#1AB394',
     color: 'white',
     fontSize: 18,
     fontWeight: 'bold',
@@ -68,7 +68,7 @@ const styles = StyleSheet.create({
   newsItem: {
     marginBottom: 20,
     borderLeftWidth: 4,
-    borderLeftColor: '#26A69A',
+    borderLeftColor: '#1AB394',
     paddingLeft: 12,
   },
   dateContainer: {
@@ -77,16 +77,16 @@ const styles = StyleSheet.create({
     marginBottom: 4,
   },
   dateText: {
-    color: '#26A69A',
+    color: '#1AB394',
     marginLeft: 4,
     fontSize: 12,
   },
   newsTitle: {
     fontSize: 16,
-    color: '#26A69A',
+    color: '#1AB394',
   },
   linkText: {
-    color: '#26A69A',
+    color: '#1AB394',
     marginTop: 4,
     fontSize: 14,
   },
