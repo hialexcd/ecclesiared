@@ -33,7 +33,7 @@ const EcCustom = ({ navigation, onLogout }) => {
           <Ionicons name="settings-outline" size={24} color="#fff" />
           <Text style={styles.menuText}>Configuración</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.menuItem} onPress={() => navigateTo('Home')}>
+        <TouchableOpacity style={styles.menuItem} onPress={() => navigateTo('Calendar')}>
           <Ionicons name="calendar-outline" size={24} color="#fff" />
           <Text style={styles.menuText}>Agenda Interior</Text>
         </TouchableOpacity>

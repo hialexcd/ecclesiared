@@ -1,9 +1,10 @@
 import React from 'react';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { NavigationContainer } from '@react-navigation/native';
-import CommunicationScreen from '../screens/CommunicationScreens/CommunicationScreen';
 import MainPanel from '../screens/MainPanel';
+import CommunicationScreen from '../screens/CommunicationScreens/CommunicationScreen';
 import ConfigurationScreen from '../screens/ConfigurationScreens/ConfigurationScreen';
+import CalendarScreen from '../screens/CalendarScreens/CalendarScreen';
 import EcCustom from './EcCustom';
 import Header from './Header';
 import ECStack from './ECStack';
@@ -26,6 +27,7 @@ const DrawerNavigation = ({ onLogout }) => {
         <Drawer.Screen name="Home" component={MainPanel} />
         <Drawer.Screen name="Configuration" component={ConfigurationScreen} />
         <Drawer.Screen name="Communication" component={CommunicationScreen} />
+        <Drawer.Screen name="Calendar" component={CalendarScreen} />
         <Drawer.Screen name="EcStack" component={ECStack} />
         <Drawer.Screen name="LoginScreen" component={LoginScreen} />
       </Drawer.Navigator>

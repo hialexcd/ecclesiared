@@ -1,23 +1,23 @@
-import { View, Text, StyleSheet } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import React from 'react';
+import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
+import { useRoute } from '@react-navigation/native';
+import { PagerView } from 'react-native-pager-view';
 import EcChart from '../components/EcChart';
 import EcDocumentos from '../components/EcDocumentos';
 import EcAgenda from '../components/EcAgenda';
 import EcActualidad from '../components/EcAtualidad';
 
-import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
-import { PagerView } from 'react-native-pager-view';
-
 const Tab = createMaterialTopTabNavigator();
 
 export default function MainPanel() {
+  const route = useRoute();
+
   return (
     <View style={styles.container}>
       <Tab.Navigator
-        pager={(props) => {
-          const { key, ...otherProps } = props; // Elimina "key" del spread
-          return <PagerView {...otherProps} />;
-        }}
+        initialRouteName={route.params?.screen || "Estadísticas"} // Si hay una pestaña enviada, la usa; si no, usa la predeterminada
+        pager={(props) => <PagerView {...props} />}
         screenOptions={{
           tabBarLabelStyle: { fontSize: 8 },
           tabBarStyle: { backgroundColor: '#1AB394' },
@@ -37,11 +37,6 @@ export default function MainPanel() {
           options={{ tabBarLabel: 'Documentos' }}
         />
         <Tab.Screen 
-          name="Agenda" 
-          component={EcAgenda}
-          options={{ tabBarLabel: 'Agenda' }}
-        />
-        <Tab.Screen 
           name="Actualidad" 
           component={EcActualidad}
           options={{ tabBarLabel: 'Actualidad' }}
@@ -55,20 +50,5 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#F3F3F4',
-  },
-  eccImage: {
-    flex: 0.2,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  ecComun: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  placeholderContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
   },
 });

@@ -82,7 +82,10 @@ useEffect(() => {
       <View style={styles.messageFooter}>
         <Text style={styles.dateText}>{item.date}</Text>
         <View style={styles.actions}>
-          <TouchableOpacity style={styles.actionButton}>
+          <TouchableOpacity style={styles.actionButton}  onPress={() => navigation.navigate('ECMessages', { 
+      messageId: item.id,
+      subject: item.subject // Make sure to pass the subject here
+    })}>
             <Ionicons name="eye-outline" size={20} color="#1AB394" />
           </TouchableOpacity>
           <TouchableOpacity style={styles.actionButton}>
