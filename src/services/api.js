@@ -8,9 +8,6 @@ let currentSession = null;
 // Función de login adaptada para usar Indie ID
 export const login = async (username, password) => {
   try {
-    // Registrar al usuario en NativeNotify con su email como Indie ID
-   registerIndieID(username, 26947, "X2IskvSUeT1DcANCxJuZDD");
-
     const url = "https://api.mintrared.com/api.php/login"; // Endpoint del login
 
     const data = {
@@ -33,10 +30,13 @@ export const login = async (username, password) => {
 
     if (responseData && responseData.response && responseData.response !== "0") {
       currentSession = responseData.response; // Guardar sesión en memoria
+        
+        // Registrar al usuario en NativeNotify con su session como Indie ID
+       registerIndieID(responseData.response, 26947, "X2IskvSUeT1DcANCxJuZDD");
 
       Alert.alert(
         "Login Exitoso",
-        `Usuario registrado: ${username}\nSession: ${currentSession}`,
+        `Session: ${currentSession}`,
         [{ text: "OK" }]
       );
 

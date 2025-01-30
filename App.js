@@ -8,7 +8,7 @@ import registerNNPushToken from 'native-notify';
 
 export default function App() {
   // Inicializar NativeNotify con el método correcto
-  registerNNPushToken(26947, "X2IskvSUeT1DcANCxJuZDD");
+  registerNNPushToken(26965, "GCkesmLDLEfVSJvboFYOiz");
     
   const [loggedIn, setLoggedIn] = useState(false);
 
@@ -35,7 +35,7 @@ export default function App() {
     return (
       <SafeAreaProvider>
         <SafeAreaView style={{ flex: 1 }}>
-          <StatusBar backgroundColor="#26A69A" />
+          <StatusBar backgroundColor="#1AB394" />
           <LoginScreen onLogin={handleLogin} />
         </SafeAreaView>
       </SafeAreaProvider>
@@ -45,7 +45,7 @@ export default function App() {
   return (
     <SafeAreaProvider>
       <SafeAreaView style={{ flex: 1 }}>
-        <StatusBar backgroundColor="#26A69A" />
+        <StatusBar backgroundColor="#1AB394" />
         <DrawerNavigation onLogout={handleLogout} />
       </SafeAreaView>
     </SafeAreaProvider>
