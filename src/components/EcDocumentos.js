@@ -56,6 +56,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     borderRadius: 8,
     padding: 16,
+    paddingBottom: 70,
     margin: 16,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
@@ -97,7 +98,7 @@ const styles = StyleSheet.create({
     color: '#757575',
   },
   documentList: {
-    maxHeight: 300,
+    maxHeight: 500,
   },
   documentItem: {
     flexDirection: 'row',

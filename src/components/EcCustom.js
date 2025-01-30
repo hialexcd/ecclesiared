@@ -1,9 +1,29 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { openWebPage } from '../services/api';
+import { openWebPage, getConfiguracion } from '../services/api';
 
 const EcCustom = ({ navigation, onLogout }) => {
+    
+  const [nombreUsuario, setNombreUsuario] = useState('Cargando...');
+  useEffect(() => {
+    const fetchConfig = async () => {
+      try {
+        const data = await getConfiguracion();
+        if (data && data.nombre) {
+          setNombreUsuario(data.nombre);
+        } else {
+          setNombreUsuario('Usuario');
+        }
+      } catch (error) {
+        console.error('Error obteniendo la configuración:', error);
+        setNombreUsuario('Usuario');
+      }
+    };
+
+    fetchConfig();
+  }, []);
+
   const navigateTo = (screenName) => {
     navigation.navigate(screenName);
   };
@@ -21,7 +41,7 @@ const EcCustom = ({ navigation, onLogout }) => {
       <ScrollView>
         <View style={styles.profileSection}>
           <View>
-            <Text style={styles.profileName}>Jorge</Text>
+            <Text style={styles.profileName}>{nombreUsuario}</Text>
             <Text style={styles.profileSubtext}>Mis datos</Text>
           </View>
         </View>
