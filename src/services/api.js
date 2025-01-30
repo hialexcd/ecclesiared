@@ -1,9 +1,33 @@
 import { Alert, Linking } from "react-native"; // para openweb linking
 import { registerIndieID } from 'native-notify'; //estos dos para el push
 import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';//para guardar la sesión realmente al instalar
 
 // Manejo de sesión en memoria
 let currentSession = null;
+
+//función guardar sesión en memoria
+const saveSession = async (session) => {
+  try {
+    await AsyncStorage.setItem('userSession', session);
+  } catch (error) {
+    console.error("Error guardando la sesión:", error);
+  }
+};
+// para leer la sesión de memoria
+export const loadSession = async () => {
+  try {
+    const session = await AsyncStorage.getItem('userSession');
+    if (session) {
+      currentSession = session;
+    }
+    return session;
+  } catch (error) {
+    console.error("Error al cargar la sesión:", error);
+    return null;
+  }
+};
+
 
 // Función de login adaptada para usar Indie ID
 export const login = async (username, password) => {
@@ -27,10 +51,11 @@ export const login = async (username, password) => {
     }
 
     const responseData = await response.json();
-
+      
     if (responseData && responseData.response && responseData.response !== "0") {
       currentSession = responseData.response; // Guardar sesión en memoria
-        
+          await saveSession(currentSession); // Guardar en AsyncStorage
+
         // Registrar al usuario en NativeNotify con su session como Indie ID
        registerIndieID(responseData.response, 26947, "X2IskvSUeT1DcANCxJuZDD");
 
@@ -58,13 +83,18 @@ export const login = async (username, password) => {
 };
 
 // Verificar si el usuario está autenticado
-export const isLoggedIn = () => {
-  return currentSession !== null;
+export const isLoggedIn = async () => {
+  return await loadSession() !== null;
 };
 
 // Función para cerrar sesión
-export const logout = () => {
-  currentSession = null;
+export const logout = async () => {
+  try {
+    await AsyncStorage.removeItem('userSession');
+    currentSession = null;
+  } catch (error) {
+    console.error("Error al eliminar la sesión:", error);
+  }
 };
 
 // Función para obtener configuraciones
