@@ -43,12 +43,14 @@ const EcChart = () => {
     return <Text>Cargando...</Text>; // Muestra un mensaje mientras se cargan los datos
   }
 
- // const labels = Object.keys(toggles);
-    const labels = estadisticas.years;
+  const labels = Object.keys(toggles);
+      //const labels = estadisticas.years;
+const years = estadisticas.years; // Ahora las etiquetas del eje X serán los años
+//const toggleLabels = Object.keys(toggles); // Mantiene los nombres de los sacramentos en los toggles
 
   // Usar los datos obtenidos de la API
   const data = {
-    labels: labels,
+    labels: years,
     datasets: Object.entries(toggles).filter(([_, value]) => value).map(([key, _], index) => ({
       data: estadisticas[key],  // Usar los datos de la API
       color: (opacity = 1) => {
