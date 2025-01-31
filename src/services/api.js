@@ -107,80 +107,53 @@ export const getConfiguracion = async () => {
 
 // Función para obtener la información del panel
 export const getPanel = async () => {
-  const data = {
-    estadisticas: {
-      Bautismos: [10, 20, 30, 40, 0],
-      Matrimonios: [15, 25, 35, 55, 60],
-      Confirmaciones: [5, 10, 15, 25, 60],
-      Defunciones: [2, 4, 6, 8, 60],
-      Comuniones: [50, 60, 70, 8, 0],
-    },
-    noticias_izquierda: [
-      {
-        fecha: "2024-11-22",
-        titular:
-          "Obispos colombianos convocan colecta nacional para ayudar a reconstruir edificaciones de la Iglesia en Guapi afectadas tras el atentado",
-        enlace: "https://www.cec.org.co/sistema-informativo/actualidad/obispos-colombianos-convocan-colecta-nacional-para-ayudar",
+  try {
+    const response = await fetch(
+      `https://api.mintrared.com/api.php/panel?session=${currentSession}`
+    );
+    const responseText = await response.text();
+    const cleanResponse = responseText.replace(/^[^{[]*/, "");
+    const data = JSON.parse(cleanResponse);
+
+    // Obtener los 5 años más recientes ordenados
+    const years = Object.keys(data.estadisticas).sort((a, b) => b - a).slice(0, 5);
+    
+    // Formatear estadísticas en la estructura deseada
+    const formattedStats = {
+      Bautismos: [],
+      Matrimonios: [],
+      Confirmaciones: [],
+      Defunciones: [],
+      Comuniones: []
+    };
+
+    years.forEach((year) => {
+      formattedStats.Bautismos.push(data.estadisticas[year].bautismos || 0);
+      formattedStats.Matrimonios.push(data.estadisticas[year].matrimonios || 0);
+      formattedStats.Confirmaciones.push(data.estadisticas[year].confirmaciones || 0);
+      formattedStats.Defunciones.push(data.estadisticas[year].defunciones || 0);
+      formattedStats.Comuniones.push(data.estadisticas[year].comuniones || 0);
+    });
+
+    return {
+      estadisticas: formattedStats,
+      noticias_izquierda: data.noticias_izquierda || [],
+      noticias_derecha: data.noticias_derecha || []
+    };
+  } catch (error) {
+    console.error("Error al obtener el panel:", error);
+    return {
+      estadisticas: {
+        Bautismos: [0, 0, 0, 0, 0],
+        Matrimonios: [0, 0, 0, 0, 0],
+        Confirmaciones: [0, 0, 0, 0, 0],
+        Defunciones: [0, 0, 0, 0, 0],
+        Comuniones: [0, 0, 0, 0, 0],
       },
-      {
-        fecha: "2024-11-23",
-        titular:
-          "Emergencia invernal y paro armado en el Chocó: Obispos de Istmina-Tadó y de Quibdó piden ayuda urgente para las comunidades",
-        enlace: "https://www.cec.org.co/sistema-informativo/actualidad/emergencia-invernal-y-paro-armado-en-el-choco-obispos-de-istmina",
-      },
-      {
-        fecha: "2024-11-24",
-        titular:
-          "Obispos colombianos convocan la solidaridad de todos los fieles y entidades para ayudar a los damnificados por la ola invernal",
-        enlace: "https://www.cec.org.co/sistema-informativo/actualidad/obispos-colombianos-convocan-la-solidaridad-de-todos-los-fieles-y",
-      },
-      {
-        fecha: "2024-11-26",
-        titular:
-          "Delegación de la Iglesia colombiana está lista para participar en el Sexto Congreso Americano Misionero que se celebrará en Puerto Rico",
-        enlace: "https://www.cec.org.co/sistema-informativo/actualidad/delegacion-de-la-iglesia-colombiana-esta-lista-para-participar-en-el",
-      },
-      {
-        fecha: "2024-11-28",
-        titular:
-          "Boletín Litúrgico 88: todo sobre el Congreso Mariano en Ipiales y el Leccionario para las Misas de los Santos aprobado por la Santa Sede",
-        enlace: "https://www.cec.org.co/sistema-informativo/actualidad/boletin-liturgico-88-todo-sobre-el-congreso-mariano-en-ipiales-y-el",
-      },
-    ],
-    noticias_derecha: [
-      {
-        fecha: "2024-11-11",
-        titular:
-          "La Diócesis de Coatzacoalcos se integra a Ecclesiared para mejorar la gestión parroquial de sus parroquias",
-        enlace: "https://www.ecclesiared.es/la-diocesis-de-coatzacoalcos-se-integra-a-ecclesiared-para-mejorar-la-gestion-parroquial-de-sus-parroquias/?utm_source=rss&#038;utm_medium=rss&#038;utm_campaign=la-diocesis-de-coatzacoalcos-se-integra-a-ecclesiared-para-mejorar-la-gestion-parroquial-de-sus-parroquias",
-      },
-      {
-        fecha: "2024-11-11",
-        titular:
-          "La parroquia Nuestra Señora de Montserrat de Picanya salva su archivo parroquial de la DANA gracias a Ecclesiared",
-        enlace: "https://www.ecclesiared.es/la-parroquia-nuestra-senora-de-montserrat-de-picanya-salva-su-archivo-parroquial-de-la-dana-gracias-a-ecclesiared/?utm_source=rss&#038;utm_medium=rss&#038;utm_campaign=la-parroquia-nuestra-senora-de-montserrat-de-picanya-salva-su-archivo-parroquial-de-la-dana-gracias-a-ecclesiared",
-      },
-      {
-        fecha: "2024-11-11",
-        titular:
-          "La Prelatura de Illapel implementa Ecclesiared para modernizar su gestión parroquial",
-        enlace: "https://www.ecclesiared.es/la-prelatura-de-illapel-implementa-ecclesiared-para-modernizar-su-gestion-parroquial/?utm_source=rss&#038;utm_medium=rss&#038;utm_campaign=la-prelatura-de-illapel-implementa-ecclesiared-para-modernizar-su-gestion-parroquial",
-      },
-      {
-        fecha: "2024-10-15",
-        titular:
-          "Ventajas de contar con un software parroquial en situaciones de emergencia como huracanes o incendios",
-        enlace: "https://www.ecclesiared.es/ventajas-de-contar-con-un-software-parroquial-en-situaciones-de-emergencia-como-huracanes-o-incendios/?utm_source=rss&#038;utm_medium=rss&#038;utm_campaign=ventajas-de-contar-con-un-software-parroquial-en-situaciones-de-emergencia-como-huracanes-o-incendios",
-      },
-      {
-        fecha: "2024-10-10",
-        titular:
-          "La Diócesis de Ciudad de Altamirano digitaliza sus parroquias con Ecclesiared",
-        enlace: "https://www.ecclesiared.es/la-diocesis-de-ciudad-de-altamirano-tambien-se-digitaliza-con-ecclesiared/?utm_source=rss&#038;utm_medium=rss&#038;utm_campaign=la-diocesis-de-ciudad-de-altamirano-tambien-se-digitaliza-con-ecclesiared",
-      },
-    ],
-  };
-  return data; // Devuelve el JSON directamente
+      noticias_izquierda: [],
+      noticias_derecha: []
+    };
+  }
 };
 
 // Funciones para comunicaciones
