@@ -43,7 +43,8 @@ const EcChart = () => {
     return <Text>Cargando...</Text>; // Muestra un mensaje mientras se cargan los datos
   }
 
-  const labels = Object.keys(toggles);
+ // const labels = Object.keys(toggles);
+    const labels = estadisticas.years;
 
   // Usar los datos obtenidos de la API
   const data = {

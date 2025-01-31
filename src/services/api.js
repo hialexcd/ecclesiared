@@ -120,6 +120,7 @@ export const getPanel = async () => {
     
     // Formatear estadísticas en la estructura deseada
     const formattedStats = {
+      years: years,
       Bautismos: [],
       Matrimonios: [],
       Confirmaciones: [],
@@ -144,6 +145,7 @@ export const getPanel = async () => {
     console.error("Error al obtener el panel:", error);
     return {
       estadisticas: {
+        years: ["", "", "", "", ""],
         Bautismos: [0, 0, 0, 0, 0],
         Matrimonios: [0, 0, 0, 0, 0],
         Confirmaciones: [0, 0, 0, 0, 0],
